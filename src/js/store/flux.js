@@ -1,45 +1,50 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			people: [],
+			planets: [],
+			vehicles: [],
+			favorites: [],
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
+			getPeople: () => {
+				fetch('https://www.swapi.tech/api/people').then(res => res.json()).then(data =>{
+					setStore({people: data.results})
+				}).catch();
 			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
+
+			getPlanets: () => {
+				fetch('https://www.swapi.tech/api/planets').then(res => res.json()).then(data =>{
+					setStore({planets: data.results})
+				}).catch();
 			},
-			changeColor: (index, color) => {
-				//get the store
+
+			getVehicles: () => {
+				fetch('https://www.swapi.tech/api/vehicles').then(res => res.json()).then(data =>{
+					setStore({vehicles: data.results})
+				}).catch();
+			},
+
+			addFavorites: (newFav) => {
 				const store = getStore();
+				setStore({favorites: [...store.favorites, newFav]})
+			},
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+			deleteFavorites: (fav) => {
+				const store = getStore();
+				store.favorites.splice(fav, 1);
+				setStore({favorites: [...store.favorites]})
+			},
 
-				//reset the global store
-				setStore({ demo: demo });
+			handleLikes: (name) => {
+				const store = getStore();
+				let index = store.favorites.findIndex(elem => elem.name == name);
+				store.favorites.splice(index, 1);
+				setStore({favorites: store.favorites});
 			}
 		}
 	};
 };
 
-export default getState;
+export  default getState;

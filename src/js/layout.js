@@ -2,13 +2,16 @@ import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import ScrollToTop from "./component/scrollToTop";
 
-import { Home } from "./views/home";
-import { Demo } from "./views/demo";
-import { Single } from "./views/single";
+// Import views
+import Home from "./views/home";
+import SingleCharacter from "./views/singleCharacter";
+import SinglePlanet from "./views/singlePlanet";
+import SingleVehicle from "./views/singleVehicle";
 import injectContext from "./store/appContext";
 
-import { Navbar } from "./component/navbar";
-import { Footer } from "./component/footer";
+// Import Components
+import Navbar from "./component/Navbar";
+import Footer from "./component/Footer";
 
 //create your first component
 const Layout = () => {
@@ -22,20 +25,13 @@ const Layout = () => {
 				<ScrollToTop>
 					<Navbar />
 					<Switch>
-						<Route exact path="/">
-							<Home />
-						</Route>
-						<Route exact path="/demo">
-							<Demo />
-						</Route>
-						<Route exact path="/single/:theid">
-							<Single />
-						</Route>
-						<Route>
-							<h1>Not found!</h1>
-						</Route>
+						<Route exact path="/" component={Home}/>
+						<Route exact path="/singleCharacter/:uid" component={SingleCharacter}/>
+						<Route exact path="/singlePlanet/:uid" component={SinglePlanet}/>
+						<Route exact path="/singleVehicle/:uid" component={SingleVehicle}/>
+						<Route render={() => <h1>Not found!</h1>} />
 					</Switch>
-					<Footer />
+					<Footer/>
 				</ScrollToTop>
 			</BrowserRouter>
 		</div>
